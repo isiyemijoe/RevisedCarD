@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.recyclerview.widget.ItemTouchHelper.*;
+import static androidx.recyclerview.widget.ItemTouchHelper.RIGHT;
+
 
 public class MainActivity extends AppCompatActivity {
     CardView view;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mSportData = new ArrayList<>();
         initializeData();
 
-        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, LEFT | RIGHT) {
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 return 0;
