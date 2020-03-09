@@ -3,8 +3,10 @@ package com.example.revisedcard;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mSportData = new ArrayList<>();
         initializeData();
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                return 0;
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        });
         recyclerView = findViewById(R.id.recycler_view);
         adapter = new SportAdapter(this, mSportData);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
