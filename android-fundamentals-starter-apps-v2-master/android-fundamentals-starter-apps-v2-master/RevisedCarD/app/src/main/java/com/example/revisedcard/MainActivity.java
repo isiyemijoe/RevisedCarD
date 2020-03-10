@@ -2,6 +2,7 @@ package com.example.revisedcard;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static androidx.recyclerview.widget.ItemTouchHelper.*;
@@ -28,30 +30,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSportData = new ArrayList<>();
-        initializeData();
-
-        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, LEFT | RIGHT) {
-            @Override
-            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                return 0;
-            }
-
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            }
-        });
         recyclerView = findViewById(R.id.recycler_view);
         adapter = new SportAdapter(this, mSportData);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        initializeData();
+
+        ItemTouchHelper helper = new ItemTouchHelper(new SimpleCallback(LEFT | RIGHT | UP | DOWN, LEFT | RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int from = viewHolder.getAdapterPosition();
+                int to = target.getAdapterPosition();
+                Collections.swap(mSportData, from, to);
+                adapter.notifyItemMoved(from, to);
+                toast();
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                mSportData.remove(viewHolder.getAdapterPosition());
+                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            }
+        });
+        helper.attachToRecyclerView(recyclerView);
 
 
+    }
+
+    private void toast() {
+        Toast.makeText(this, "Item has been Moved", Toast.LENGTH_SHORT).show();
     }
 
     public void initializeData() {
