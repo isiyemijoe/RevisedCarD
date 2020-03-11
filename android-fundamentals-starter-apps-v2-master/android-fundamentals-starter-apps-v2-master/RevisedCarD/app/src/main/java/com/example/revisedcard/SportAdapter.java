@@ -1,6 +1,7 @@
 package com.example.revisedcard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class SportAdapter extends RecyclerView.Adapter<SportAdapter.myViewHolder
         return mData.size();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder {
+    public class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView sportPhoto;
         TextView sportTitle;
@@ -57,6 +58,18 @@ public class SportAdapter extends RecyclerView.Adapter<SportAdapter.myViewHolder
             sportInfo = itemView.findViewById(R.id.sport_info_textview);
             sportTitle = itemView.findViewById(R.id.sport_title_text);
             sportPhoto = itemView.findViewById(R.id.sport_image);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Sport selected = mData.get(getAdapterPosition());
+            Intent detailIntent = new Intent(mContext, details_activity.class);
+
+            detailIntent.putExtra("title", selected.getTitle());
+            detailIntent.putExtra("image_Resource", selected.getImageResource());
+            mContext.startActivity(detailIntent);
+
         }
     }
 }

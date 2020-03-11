@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     List<Sport> mSportData;
     RecyclerView recyclerView;
     SportAdapter adapter;
+    FloatingActionButton refreshFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
